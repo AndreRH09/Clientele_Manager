@@ -2,9 +2,7 @@ package tech.getArray.employeemanager;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.getArray.employeemanager.model.Employee;
 import tech.getArray.employeemanager.service.EmployeeService;
 
@@ -16,18 +14,40 @@ public class EmployeeResource {
     private final EmployeeService employeeService;
 
     public EmployeeResource(EmployeeService employeeService) {
+
         this.employeeService = employeeService;
     }
 
-    @RequestMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Employee>> getAllEmployees(){
         List<Employee> employees = employeeService.getAllEmployees();
         return new ResponseEntity<>(employees,HttpStatus.OK);
     }
 
-    @RequestMapping("/find/{id}")
-    public ResponseEntity<List<Employee>> getEmployeeById(@PathVariable Long id){
-        List<Employee> employees = employeeService.findEmployeebyId(id);
-        return new ResponseEntity<>(employees,HttpStatus.OK);
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Employee> getEmployeebyId(@PathVariable("id") Long id){
+        Employee employee = employeeService.findEmployeebyId(id);
+        return new ResponseEntity<>(employee,HttpStatus.OK);
+    }
+
+
+    @PostMapping("/add/")
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
+        Employee newEmployee = employeeService.addEmployee(employee);
+        return new ResponseEntity<>(newEmployee,HttpStatus.CREATED);
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
+        Employee updateEmployee = employeeService.updateEmployee(employee);
+        return new ResponseEntity<>(updateEmployee,HttpStatus.ACCEPTED);
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
