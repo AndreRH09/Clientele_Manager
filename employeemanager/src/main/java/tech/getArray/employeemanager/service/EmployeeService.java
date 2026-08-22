@@ -1,6 +1,5 @@
 package tech.getArray.employeemanager.service;
 
-import org.hibernate.boot.model.source.spi.EmbeddableMapping;
 import org.springframework.stereotype.Service;
 import tech.getArray.employeemanager.exception.UserNotFoundException;
 import tech.getArray.employeemanager.model.Employee;

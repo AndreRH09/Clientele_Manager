@@ -1,7 +1,7 @@
 package tech.getArray.employeemanager.exception;
 
 public class UserNotFoundException extends RuntimeException{
-    public UsernotFoundException(String message) {
+    public UserNotFoundException(String message) {
         super(message);
     }
 }
