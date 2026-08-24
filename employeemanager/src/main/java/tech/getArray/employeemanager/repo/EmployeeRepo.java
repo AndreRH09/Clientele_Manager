@@ -6,7 +6,7 @@ import tech.getArray.employeemanager.model.Employee;
 import java.util.Optional;
 
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
-    void deleteEmployeebyId(Long id);
+    void deleteEmployeeById(Long id);
 
-    Optional<Employee> findEmployeebyId(Long id);
+    Optional<Employee> findEmployeeById(Long id);
 }

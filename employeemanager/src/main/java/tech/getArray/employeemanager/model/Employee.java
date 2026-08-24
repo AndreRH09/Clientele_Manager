@@ -27,6 +27,8 @@ public class Employee implements Serializable {
         this.imgUrl = imgUrl;
         this.employeeCode = employeeCode;
     }
+    public Employee() {
+    }
 
     public Long getId() {
         return id;

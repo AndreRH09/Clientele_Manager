@@ -31,7 +31,7 @@ public class EmployeeResource {
     }
 
 
-    @PostMapping("/add/")
+    @PostMapping("/add")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
         Employee newEmployee = employeeService.addEmployee(employee);
         return new ResponseEntity<>(newEmployee,HttpStatus.CREATED);

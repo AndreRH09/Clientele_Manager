@@ -30,12 +30,12 @@ public class EmployeeService {
     }
 
     public Employee findEmployeebyId(Long id) {
-        return employeeRepo.findEmployeebyId(id)
+        return employeeRepo.findEmployeeById(id)
                 .orElseThrow(()-> new UserNotFoundException("user by Id "+ id +" not found"));
     }
 
     public void deleteEmployee(Long id) {
-        employeeRepo.deleteEmployeebyId(id);
+        employeeRepo.deleteEmployeeById(id);
     }
 
 }
