@@ -44,6 +44,17 @@ public class EmployeeResource {
         return new ResponseEntity<>(updateEmployee,HttpStatus.ACCEPTED);
     }
 
+    @PutMapping("/updateEmployee/{id}")
+    public ResponseEntity<Employee> updateEmployeebyId(@PathVariable Long id,
+            @RequestBody Employee employee) {
+
+        employee.setId(id);
+
+        Employee updatedEmployee = employeeService.updateEmployee(employee);
+
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.ACCEPTED);
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){

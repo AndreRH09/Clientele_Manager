@@ -26,7 +26,21 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee) {
-        return employeeRepo.save(employee);
+
+        Employee existingEmployee = employeeRepo.findEmployeeById(employee.getId())
+                .orElseThrow(() ->
+                        new UserNotFoundException(
+                                "User by Id " + employee.getId() + " not found"
+                        )
+                );
+
+        existingEmployee.setName(employee.getName());
+        existingEmployee.setEmail(employee.getEmail());
+        existingEmployee.setPhone(employee.getPhone());
+        existingEmployee.setJobTitle(employee.getJobTitle());
+        existingEmployee.setImgUrl(employee.getImgUrl());
+
+        return employeeRepo.save(existingEmployee);
     }
 
     public Employee findEmployeebyId(Long id) {
