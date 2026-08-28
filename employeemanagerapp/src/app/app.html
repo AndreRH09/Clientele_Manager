@@ -1,93 +1,191 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand text-white">Employee Manager</a>
+<div id="main-container">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand text-white">Employee Manager</a>
 
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarColor02"
-    aria-controls="navbarColor02"
-    aria-expanded="false"
-    aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+      aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
 
-    <span class="navbar-toggler-icon"></span>
-  </button>
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="navbar-collapse" id="navbarColor02">
+    <div class="navbar-collapse" id="navbarColor02">
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a
-          class="nav-link"
-          data-toggle="modal"
-          data-target="#addEmployeeModal">
-          Add Employee
-        </a>
-      </li>
-    </ul>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" (click)="onOpenModal(null, 'add')">
+            Add Employee
+          </a>
+        </li>
+      </ul>
 
-    <form class="form-inline my-2 my-lg-0 ml-auto">
-      <input
-        type="search"
-        name="key"
-        id="searchName"
-        class="form-control mr-sm-2"
-        placeholder="Search employees...">
-    </form>
+      <form class="form-inline my-2 my-lg-0 ml-auto">
+        <input type="search" name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search employees...">
+      </form>
 
-  </div>
-</nav>
+    </div>
+  </nav>
 
-<div class="container mt-4">
+  <div class="container mt-4">
 
-  <div class="row">
-    <!--Car Inicio-->
-    <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
-      <div class="card m-b-30">
+    <div class="row">
+      <!--Car Inicio-->
+      <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
+        <div class="card m-b-30">
 
-        <div class="card-body row">
+          <div class="card-body row">
 
-          <div class="col-6">
-            <a href="#">
-              <img
-                src="{{ employee?.imgUrl }}"
-                alt="{{ employee?.name }}"
-                class="img-fluid rounded-circle w-60">
-            </a>
+            <div class="col-6">
+              <a href="#">
+                <img src="{{ employee?.imgUrl }}" alt="{{ employee?.name }}" class="img-fluid rounded-circle w-60">
+              </a>
+            </div>
+
+            <div class="col-6 card-title align-self-center mb-0">
+              <h5>{{ employee?.name }}</h5>
+              <p class="m-0">{{ employee?.jobTitle }}</p>
+            </div>
+
           </div>
 
-          <div class="col-6 card-title align-self-center mb-0">
-            <h5>{{ employee?.name }}</h5>
-            <p class="m-0">{{ employee?.jobTitle }}</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <i class="fa fa-envelope float-right"></i>
+              Email :
+              <a href="mailto:{{ employee?.email }}">
+                {{ employee?.email }}
+              </a>
+            </li>
+
+            <li class="list-group-item">
+              <i class="fa fa-phone float-right"></i>
+              Phone : {{ employee?.phone }}
+            </li>
+          </ul>
+          <div class="card-body">
+            <div class="float-right btn-group btn-group-sm">
+              <a (click)="onOpenModal(employee, 'edit')" class="btn btn-primary tooltips" data-placement="top"
+                data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+              <a (click)="onOpenModal(employee, 'delete')" class="btn btn-secondary tooltips" data-placement="top"
+                data-original-title="Delete"><i class="fa fa-times"></i></a>
+            </div>
           </div>
 
         </div>
-
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <i class="fa fa-envelope float-right"></i>
-            Email :
-            <a href="mailto:{{ employee?.email }}">
-              {{ employee?.email }}
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <i class="fa fa-phone float-right"></i>
-            Phone : {{ employee?.phone }}
-          </li>
-        </ul>
-
       </div>
+
     </div>
 
   </div>
 
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog d-flex justify-content-center">
+      <div class="modal-content w-75">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel2">Sign up</h5>
+          <button type="button" data-bs-button-init data-bs-ripple-init class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form>
+            <!-- Name input -->
+            <div data-bs-input-init class="form-outline mb-4">
+              <input type="text" id="name2" class="form-control" />
+              <label class="form-label" for="name2">Name</label>
+            </div>
+
+            <!-- Email input -->
+            <div data-bs-input-init class="form-outline mb-4">
+              <input type="email" id="email2" class="form-control" />
+              <label class="form-label" for="email2">Email address</label>
+            </div>
+
+            <!-- password input -->
+            <div data-bs-input-init class="form-outline mb-4">
+              <input type="password" id="password2" class="form-control" />
+              <label class="form-label" for="password2">Password</label>
+            </div>
+          </form>
+          <!-- Footer -->
+          <div class="modal-footer"> <!-- Botón cerrar --> 
+            <button type="button" class="btn btn-secondary"
+              data-bs-dismiss="modal"> Cerrar </button>
+            <!-- Botón guardar -->
+            <button type="submit" class="btn btn-primary"> Guardar </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<!-- Estructura del Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <!-- Encabezado -->
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="modalUsuarioLabel">
+          <i class="bi bi-person-bounding-box me-2 text-primary"></i>Información del Perfil
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Formulario incorporado en el cuerpo -->
+      <form id="userProfileForm">
+        <div class="modal-body">
+          
+          <!-- Fila 1: Nombre completo -->
+          <div class="mb-3">
+            <label for="inputName" class="form-label fw-semibold">Nombre Completo</label>
+            <input type="text" class="form-control" id="inputName" placeholder="Ej. Juan Pérez" required>
+          </div>
+          
+          <!-- Fila 2: Correo Electrónico -->
+          <div class="mb-3">
+            <label for="inputEmail" class="form-label fw-semibold">Correo Electrónico</label>
+            <input type="email" class="form-control" id="inputEmail" placeholder="juan.perez@empresa.com" required>
+          </div>
+          
+          <!-- Fila 3: Puesto de trabajo & Teléfono (Dos columnas) -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="inputJob" class="form-label fw-semibold">Puesto (Job Title)</label>
+              <input type="text" class="form-control" id="inputJob" placeholder="Ej. Desarrollador Web" required>
+            </div>
+            <div class="col-md-6">
+              <label for="inputPhone" class="form-label fw-semibold">Teléfono</label>
+              <input type="tel" class="form-control" id="inputPhone" placeholder="+51 987 654 321">
+            </div>
+          </div>
+          
+          <!-- Fila 4: URL de la Imagen -->
+          <div class="mb-2">
+            <label for="inputImgUrl" class="form-label fw-semibold">URL de la Imagen de Perfil</label>
+            <div class="input-group">
+              <span class="input-group-text" id="url-addon"><i class="bi bi-link-45deg"></i></span>
+              <input type="url" class="form-control" id="inputImgUrl" placeholder="https://ejemplo.com" aria-describedby="url-addon">
+            </div>
+            <div class="form-text text-muted">Ingresa un enlace directo a la imagen (jpg, png, etc.)</div>
+          </div>
+          
+        </div>
+        
+        <!-- Pie de página con botones de acción -->
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary px-4">Guardar Registro</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
 </div>
 
-<div
-  *ngIf="employees?.length == 0"
-  class="col-lg-12 col-md-12 col-xl-12">
+
+<div *ngIf="employees?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
 
   <div class="alert alert-info" role="alert">
     <h4 class="alert-heading">NO EMPLOYEES!</h4>
