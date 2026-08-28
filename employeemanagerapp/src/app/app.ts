@@ -4,10 +4,11 @@ import { Employee } from './employee';
 import { EmployeeService } from './employee-service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule,FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 
@@ -31,6 +32,31 @@ export class App implements OnInit {
     this.employeeService.getAllEmployee().subscribe(
       (response: Employee[]) => {
         this.employees = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public onAddEmployee(addForm: NgForm): void {
+    document.getElementById('cancelAddEmployeeBtn')?.click();
+    this.employeeService.addEmployee(addForm.value).subscribe(
+      (response: Employee) => {
+        console.log(response);
+        this.getEmployees();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public onDeleteEmployee(employeeId: number): void {
+    this.employeeService.deleteEmployee(employeeId).subscribe(
+      (response: Employee) => {
+        console.log(response);
+        this.getEmployees();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);

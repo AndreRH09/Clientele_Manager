@@ -120,7 +120,7 @@
 </div>
 <!-- Modal -->
 
-<!-- Estructura del Modal -->
+<!--  Add Modal -->
 <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -134,30 +134,30 @@
       </div>
       
       <!-- Formulario incorporado en el cuerpo -->
-      <form id="userProfileForm">
+      <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
         <div class="modal-body">
           
           <!-- Fila 1: Nombre completo -->
           <div class="mb-3">
             <label for="inputName" class="form-label fw-semibold">Nombre Completo</label>
-            <input type="text" class="form-control" id="inputName" placeholder="Ej. Juan Pérez" required>
+            <input type="text" ngModel name="name" class="form-control" id="inputName" placeholder="Ej. Juan Pérez" required>
           </div>
           
           <!-- Fila 2: Correo Electrónico -->
           <div class="mb-3">
             <label for="inputEmail" class="form-label fw-semibold">Correo Electrónico</label>
-            <input type="email" class="form-control" id="inputEmail" placeholder="juan.perez@empresa.com" required>
+            <input type="email" ngModel name="email" class="form-control" id="inputEmail" placeholder="juan.perez@empresa.com" required>
           </div>
           
           <!-- Fila 3: Puesto de trabajo & Teléfono (Dos columnas) -->
           <div class="row g-3 mb-3">
             <div class="col-md-6">
               <label for="inputJob" class="form-label fw-semibold">Puesto (Job Title)</label>
-              <input type="text" class="form-control" id="inputJob" placeholder="Ej. Desarrollador Web" required>
+              <input type="text" ngModel name="jobTitle" class="form-control" id="inputJob" placeholder="Ej. Desarrollador Web" required>
             </div>
             <div class="col-md-6">
               <label for="inputPhone" class="form-label fw-semibold">Teléfono</label>
-              <input type="tel" class="form-control" id="inputPhone" placeholder="+51 987 654 321">
+              <input type="tel" ngModel name="phone" class="form-control" id="inputPhone" placeholder="+51 987 654 321">
             </div>
           </div>
           
@@ -166,7 +166,7 @@
             <label for="inputImgUrl" class="form-label fw-semibold">URL de la Imagen de Perfil</label>
             <div class="input-group">
               <span class="input-group-text" id="url-addon"><i class="bi bi-link-45deg"></i></span>
-              <input type="url" class="form-control" id="inputImgUrl" placeholder="https://ejemplo.com" aria-describedby="url-addon">
+              <input type="url" ngModel name="imgUrl" class="form-control" id="inputImgUrl" placeholder="https://ejemplo.com" aria-describedby="url-addon">
             </div>
             <div class="form-text text-muted">Ingresa un enlace directo a la imagen (jpg, png, etc.)</div>
           </div>
@@ -175,8 +175,8 @@
         
         <!-- Pie de página con botones de acción -->
         <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary px-4">Guardar Registro</button>
+          <button type="button" id="cancelAddEmployeeBtn" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button [disabled]="!addForm.valid" type="submit" class="btn btn-primary px-4">Guardar Registro</button>
         </div>
       </form>
 
