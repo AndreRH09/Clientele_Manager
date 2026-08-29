@@ -1,3 +1,4 @@
+//employeemanagerapp\src\app\app.ts
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Employee } from './employee';

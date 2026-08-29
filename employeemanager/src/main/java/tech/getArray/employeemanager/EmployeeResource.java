@@ -1,3 +1,4 @@
+//C:\Users\andre\OneDrive\Escritorio\Portafolio\Angular\Clientele_Manager\employeemanager\src\main\java\tech\getArray\employeemanager\EmployeeResource.java
 package tech.getArray.employeemanager;
 
 import org.springframework.http.HttpStatus;

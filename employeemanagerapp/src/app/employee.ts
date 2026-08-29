@@ -1,3 +1,4 @@
+//employeemanagerapp\src\app\employee.ts
 export interface Employee {
   id: number;
   name: string;

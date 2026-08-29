@@ -1,6 +1,8 @@
+//C:\Users\andre\OneDrive\Escritorio\Portafolio\Angular\Clientele_Manager\employeemanager\src\main\java\tech\getArray\employeemanager\service\EmployeeService.java
 package tech.getArray.employeemanager.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.getArray.employeemanager.exception.UserNotFoundException;
 import tech.getArray.employeemanager.model.Employee;
 import tech.getArray.employeemanager.repo.EmployeeRepo;
