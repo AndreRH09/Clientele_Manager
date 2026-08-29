@@ -19,9 +19,8 @@
       </ul>
 
       <form class="form-inline my-2 my-lg-0 ml-auto">
-        <input type="search" name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search employees...">
+        <input type="search" (ngModelChange)="onSearch(key.value)" #key="ngModel" ngModel name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search employees...">
       </form>
-
     </div>
   </nav>
 
@@ -215,6 +214,40 @@
             <button type="button" id="cancelAddEmployeeBtn" class="btn btn-outline-secondary"
               data-bs-dismiss="modal">Cancelar</button>
             <button [disabled]="!addForm.valid" type="submit" class="btn btn-primary px-4">Guardar Registro</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!--  Delete Modal -->
+  <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Encabezado -->
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="modalUsuarioLabel">
+            <i class="bi bi-person-bounding-box me-2 text-primary"></i>Información del Perfil
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Formulario incorporado en el cuerpo -->
+        <form #deleteForm="ngForm">
+          <div class="modal-body">
+            <p>¿Estás seguro de que deseas eliminar este registro?</p>
+            <p class="text-danger">Esta acción no se puede deshacer.</p>
+
+            <input type="hidden"  name="id">
+          </div>
+
+          <!-- Pie de página con botones de acción -->
+          <div class="modal-footer bg-light">
+            <button type="button" id="cancelDeleteEmployeeBtn" class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">Cancelar</button>
+            <button (click)="onDeleteEmployee(deleteEmployee()!.id)" color="danger" type="submit" class="btn btn-danger px-4">Eliminar Registro</button>
           </div>
         </form>
 

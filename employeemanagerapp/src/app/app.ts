@@ -20,6 +20,7 @@ export class App implements OnInit {
   public title = 'employeemanagerapp';
   public employees = signal<Employee[]>([]);
   public editEmployee = signal<Employee | null>(null);
+  public deleteEmployee = signal<Employee | null>(null);
 
 
 
@@ -40,6 +41,21 @@ export class App implements OnInit {
     });
   }
 
+  public onSearch(key: String): void{
+    const results: Employee[]= [];
+    for (const employee of this.employees()){
+      if (employee.name.toLowerCase().indexOf(key.toLowerCase()) !== -1
+        || employee.email.toLowerCase().indexOf(key.toLowerCase()) !== -1
+        || employee.jobTitle.toLowerCase().indexOf(key.toLowerCase()) !== -1){
+          results.push(employee);
+        }
+
+      }
+    this.employees.set(results);
+    if (results.length === 0 || !key){
+      this.getEmployees();
+    }
+  }
   public onAddEmployee(addForm: NgForm): void {
     this.employeeService.addEmployee(addForm.value).subscribe({
       next: (response: Employee) => {
@@ -75,6 +91,7 @@ export class App implements OnInit {
       next: (response: Employee) => {
         console.log(response);
         this.employees.set(this.employees()?.filter(emp => emp.id !== employeeId));
+        document.getElementById('cancelDeleteEmployeeBtn')?.click();
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
@@ -97,6 +114,7 @@ export class App implements OnInit {
       button.setAttribute('data-bs-target', '#editEmployeeModal');
     }
     else if (mode === 'delete') {
+      this.deleteEmployee.set(employee);
       button.setAttribute('data-bs-target', '#deleteEmployeeModal');
     }
 
