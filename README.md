@@ -25,6 +25,7 @@ Sistema de gestión de empleados Full Stack desarrollado con **Spring Boot** en 
 ---
 
 ## Arquitectura de la Aplicación
+```bash
 
 Clientele_Manager/
 ├── employeemanager/             # Backend (Spring Boot 3 + Spring Data JPA)
@@ -46,6 +47,7 @@ Clientele_Manager/
 ├── app.html             # Template con Modales Bootstrap y Directivas
 ├── employee-service.ts  # Servicio HTTP para consumo de REST API
 └── employee.ts           # Interfaz de datos TypeScrip
+```
 
 ## Configuración e Instalación Local
 
