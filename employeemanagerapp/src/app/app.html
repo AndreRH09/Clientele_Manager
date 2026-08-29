@@ -29,7 +29,7 @@
 
     <div class="row">
       <!--Car Inicio-->
-      <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
+      <div *ngFor="let employee of employees()" class="col-md-6 col-xl-3">
         <div class="card m-b-30">
 
           <div class="card-body row">
@@ -77,119 +77,157 @@
 
   </div>
 
-  <!-- Edit Modal -->
-  <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-    <div class="modal-dialog d-flex justify-content-center">
-      <div class="modal-content w-75">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel2">Sign up</h5>
-          <button type="button" data-bs-button-init data-bs-ripple-init class="btn-close" data-bs-dismiss="modal"
-            aria-label="Close"></button>
+  <!--  Edit Modal -->
+  <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Encabezado -->
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="modalUsuarioLabel">
+            <i class="bi bi-person-bounding-box me-2 text-primary"></i>Editar Información del Perfil
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body p-4">
-          <form>
-            <!-- Name input -->
-            <div data-bs-input-init class="form-outline mb-4">
-              <input type="text" id="name2" class="form-control" />
-              <label class="form-label" for="name2">Name</label>
+
+        <!-- Formulario incorporado en el cuerpo -->
+        <form #editForm="ngForm" (ngSubmit)="onEditEmployee(editForm.value)">
+          <div class="modal-body">
+
+            <!-- Fila 1: Nombre completo -->
+            <div class="mb-3">
+              <label for="inputName" class="form-label fw-semibold">Nombre Completo</label>
+              <input type="text" name="name"  [ngModel]="editEmployee()?.name" class="form-control" id="inputName" placeholder="Ej. Juan Pérez"
+                required>
             </div>
 
-            <!-- Email input -->
-            <div data-bs-input-init class="form-outline mb-4">
-              <input type="email" id="email2" class="form-control" />
-              <label class="form-label" for="email2">Email address</label>
+            <!-- Fila 2: Correo Electrónico -->
+            <div class="mb-3">
+              <label for="inputEmail" class="form-label fw-semibold">Correo Electrónico</label>
+              <input type="email" name="email" [ngModel]="editEmployee()?.email" class="form-control" id="inputEmail"
+                placeholder="juan.perez@empresa.com" required>
             </div>
 
-            <!-- password input -->
-            <div data-bs-input-init class="form-outline mb-4">
-              <input type="password" id="password2" class="form-control" />
-              <label class="form-label" for="password2">Password</label>
+            <!-- Fila 3: Puesto de trabajo & Teléfono (Dos columnas) -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="inputJob" class="form-label fw-semibold">Puesto (Job Title)</label>
+                <input type="text" name="jobTitle" [ngModel]="editEmployee()?.jobTitle" class="form-control" id="inputJob"
+                  placeholder="Ej. Desarrollador Web" required>
+              </div>
+              <div class="col-md-6">
+                <label for="inputPhone" class="form-label fw-semibold">Teléfono</label>
+                <input type="tel" name="phone"  [ngModel]="editEmployee()?.phone" class="form-control" id="inputPhone"
+                  placeholder="+51 987 654 321">
+              </div>
             </div>
-          </form>
-          <!-- Footer -->
-          <div class="modal-footer"> <!-- Botón cerrar --> 
-            <button type="button" class="btn btn-secondary"
-              data-bs-dismiss="modal"> Cerrar </button>
-            <!-- Botón guardar -->
-            <button type="submit" class="btn btn-primary"> Guardar </button>
+
+            <!-- Fila 4: URL de la Imagen -->
+            <div class="mb-2">
+              <label for="inputImgUrl" class="form-label fw-semibold">URL de la Imagen de Perfil</label>
+              <div class="input-group">
+                <span class="input-group-text" id="url-addon"><i class="bi bi-link-45deg"></i></span>
+                <input type="url" name="imgUrl" [ngModel]="editEmployee()?.imgUrl" class="form-control" id="inputImgUrl"
+                  placeholder="https://ejemplo.com" aria-describedby="url-addon">
+              </div>
+              <div class="form-text text-muted">Ingresa un enlace directo a la imagen (jpg, png, etc.)</div>
+            </div>
+            
+            <input type="hidden" [ngModel]="editEmployee()?.id" name="id">
+            <input type="hidden" [ngModel]="editEmployee()?.employeeCode" name="employeeCode">
+
+
           </div>
-        </div>
+
+          <!-- Pie de página con botones de acción -->
+          <div class="modal-footer bg-light">
+            <button type="button" id="cancelEditEmployeeBtn" class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">Cancelar</button>
+            <button [disabled]="!editForm.valid" type="submit" class="btn btn-primary px-4">Guardar Registro</button>
+          </div>
+        </form>
+
       </div>
     </div>
   </div>
-</div>
-<!-- Modal -->
 
-<!--  Add Modal -->
-<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      
-      <!-- Encabezado -->
-      <div class="modal-header bg-light">
-        <h5 class="modal-title" id="modalUsuarioLabel">
-          <i class="bi bi-person-bounding-box me-2 text-primary"></i>Información del Perfil
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+  <!--  Add Modal -->
+  <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Encabezado -->
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="modalUsuarioLabel">
+            <i class="bi bi-person-bounding-box me-2 text-primary"></i>Información del Perfil
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Formulario incorporado en el cuerpo -->
+        <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
+          <div class="modal-body">
+
+            <!-- Fila 1: Nombre completo -->
+            <div class="mb-3">
+              <label for="inputName" class="form-label fw-semibold">Nombre Completo</label>
+              <input type="text" ngModel name="name" class="form-control" id="inputName" placeholder="Ej. Juan Pérez"
+                required>
+            </div>
+
+            <!-- Fila 2: Correo Electrónico -->
+            <div class="mb-3">
+              <label for="inputEmail" class="form-label fw-semibold">Correo Electrónico</label>
+              <input type="email" ngModel name="email" class="form-control" id="inputEmail"
+                placeholder="juan.perez@empresa.com" required>
+            </div>
+
+            <!-- Fila 3: Puesto de trabajo & Teléfono (Dos columnas) -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="inputJob" class="form-label fw-semibold">Puesto (Job Title)</label>
+                <input type="text" ngModel name="jobTitle" class="form-control" id="inputJob"
+                  placeholder="Ej. Desarrollador Web" required>
+              </div>
+              <div class="col-md-6">
+                <label for="inputPhone" class="form-label fw-semibold">Teléfono</label>
+                <input type="tel" ngModel name="phone" class="form-control" id="inputPhone"
+                  placeholder="+51 987 654 321">
+              </div>
+            </div>
+
+            <!-- Fila 4: URL de la Imagen -->
+            <div class="mb-2">
+              <label for="inputImgUrl" class="form-label fw-semibold">URL de la Imagen de Perfil</label>
+              <div class="input-group">
+                <span class="input-group-text" id="url-addon"><i class="bi bi-link-45deg"></i></span>
+                <input type="url" ngModel name="imgUrl" class="form-control" id="inputImgUrl"
+                  placeholder="https://ejemplo.com" aria-describedby="url-addon">
+              </div>
+              <div class="form-text text-muted">Ingresa un enlace directo a la imagen (jpg, png, etc.)</div>
+            </div>
+
+          </div>
+
+          <!-- Pie de página con botones de acción -->
+          <div class="modal-footer bg-light">
+            <button type="button" id="cancelAddEmployeeBtn" class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">Cancelar</button>
+            <button [disabled]="!addForm.valid" type="submit" class="btn btn-primary px-4">Guardar Registro</button>
+          </div>
+        </form>
+
       </div>
-      
-      <!-- Formulario incorporado en el cuerpo -->
-      <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
-        <div class="modal-body">
-          
-          <!-- Fila 1: Nombre completo -->
-          <div class="mb-3">
-            <label for="inputName" class="form-label fw-semibold">Nombre Completo</label>
-            <input type="text" ngModel name="name" class="form-control" id="inputName" placeholder="Ej. Juan Pérez" required>
-          </div>
-          
-          <!-- Fila 2: Correo Electrónico -->
-          <div class="mb-3">
-            <label for="inputEmail" class="form-label fw-semibold">Correo Electrónico</label>
-            <input type="email" ngModel name="email" class="form-control" id="inputEmail" placeholder="juan.perez@empresa.com" required>
-          </div>
-          
-          <!-- Fila 3: Puesto de trabajo & Teléfono (Dos columnas) -->
-          <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label for="inputJob" class="form-label fw-semibold">Puesto (Job Title)</label>
-              <input type="text" ngModel name="jobTitle" class="form-control" id="inputJob" placeholder="Ej. Desarrollador Web" required>
-            </div>
-            <div class="col-md-6">
-              <label for="inputPhone" class="form-label fw-semibold">Teléfono</label>
-              <input type="tel" ngModel name="phone" class="form-control" id="inputPhone" placeholder="+51 987 654 321">
-            </div>
-          </div>
-          
-          <!-- Fila 4: URL de la Imagen -->
-          <div class="mb-2">
-            <label for="inputImgUrl" class="form-label fw-semibold">URL de la Imagen de Perfil</label>
-            <div class="input-group">
-              <span class="input-group-text" id="url-addon"><i class="bi bi-link-45deg"></i></span>
-              <input type="url" ngModel name="imgUrl" class="form-control" id="inputImgUrl" placeholder="https://ejemplo.com" aria-describedby="url-addon">
-            </div>
-            <div class="form-text text-muted">Ingresa un enlace directo a la imagen (jpg, png, etc.)</div>
-          </div>
-          
-        </div>
-        
-        <!-- Pie de página con botones de acción -->
-        <div class="modal-footer bg-light">
-          <button type="button" id="cancelAddEmployeeBtn" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button [disabled]="!addForm.valid" type="submit" class="btn btn-primary px-4">Guardar Registro</button>
-        </div>
-      </form>
-
     </div>
   </div>
-</div>
 
 
-<div *ngIf="employees?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div *ngIf="employees().length == 0" class="col-lg-12 col-md-12 col-xl-12">
 
-  <div class="alert alert-info" role="alert">
-    <h4 class="alert-heading">NO EMPLOYEES!</h4>
-    <p>No Employees were found.</p>
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">NO EMPLOYEES!</h4>
+      <p>No Employees were found.</p>
+    </div>
+
   </div>
-
-</div>
