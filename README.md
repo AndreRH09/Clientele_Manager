@@ -113,6 +113,83 @@ export const environment = {
 };
 ```
 
+## 🐳 Alternative Method: Running with Docker
+
+You can run the backend application and its MySQL database in isolated containers using Docker Compose. This simplifies the setup and avoids the need to install MySQL directly on your machine.
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/get-started) installed and running.
+- Docker Compose (included with Docker Desktop).
+
+### Environment Configuration
+
+The project includes a `.env.example` file with the required environment variables:
+
+```env
+# Database Configuration
+DB_HOST=mysqldb
+DB_PORT=3306
+DB_NAME=employeemanager
+DB_USER=root
+DB_PASSWORD=andreSQL
+
+# Application Configuration
+APP_PORT=8080
+```
+
+Create your own `.env` file in the root directory based on `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+> You can modify the values in `.env` according to your local configuration.
+
+### Start the Application
+
+Build the Docker image and start the containers in the background:
+
+```bash
+docker compose up -d --build
+```
+
+Once the containers are running:
+
+- **Spring Boot Backend:** `http://localhost:8080/`
+- **MySQL Database:** `localhost:3306`
+
+### Check Running Containers
+
+To verify that the containers are running:
+
+```bash
+docker compose ps
+```
+
+To view the application logs:
+
+```bash
+docker compose logs -f
+```
+
+### Stop the Application
+
+To stop the containers:
+
+```bash
+docker compose down
+```
+
+### Rebuild the Application
+
+If you make changes to the backend or Docker configuration, rebuild the containers with:
+
+```bash
+docker compose down
+docker compose up -d --build
+```
+
 4. Inicia el servidor de desarrollo:
 
 ```bash
