@@ -113,6 +113,83 @@ export const environment = {
 };
 ```
 
+## 🐳 Método Alternativo: Ejecutar con Docker
+
+Puedes ejecutar la aplicación backend y su base de datos MySQL en contenedores aislados usando Docker Compose. Esto simplifica la configuración y evita la necesidad de instalar MySQL directamente en tu máquina.
+
+### Requisitos Previos
+
+- [Docker](https://www.docker.com/get-started) instalado y en ejecución.
+- Docker Compose (incluido con Docker Desktop).
+
+### Configuración de Entorno
+
+El proyecto incluye un archivo `.env.example` con las variables de entorno requeridas:
+
+```env
+# Configuración de Base de Datos
+DB_HOST=mysqldb
+DB_PORT=3306
+DB_NAME=employeemanager
+DB_USER=root
+DB_PASSWORD=tu_contraseña_segura_aqui 
+
+# Configuración de la Aplicación
+APP_PORT=8080
+```
+
+Crea tu propio `.env` en el directorio del mismo archivo, tomando como base `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+> You can modify the values in `.env` according to your local configuration.
+
+### Start the Application
+
+Build the Docker image and start the containers in the background:
+
+```bash
+docker compose up -d --build
+```
+
+Once the containers are running:
+
+- **Spring Boot Backend:** `http://localhost:8080/`
+- **MySQL Database:** `localhost:3306`
+
+### Check Running Containers
+
+To verify that the containers are running:
+
+```bash
+docker compose ps
+```
+
+To view the application logs:
+
+```bash
+docker compose logs -f
+```
+
+### Stop the Application
+
+To stop the containers:
+
+```bash
+docker compose down
+```
+
+### Rebuild the Application
+
+If you make changes to the backend or Docker configuration, rebuild the containers with:
+
+```bash
+docker compose down
+docker compose up -d --build
+```
+
 4. Inicia el servidor de desarrollo:
 
 ```bash
