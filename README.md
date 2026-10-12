@@ -1,18 +1,19 @@
-# Employee Manager API & Web Application
+# Employee Manager
 
-[![Angular](https://img.shields.io/badge/Angular-17%2B-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![Angular](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-26-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 
-Sistema de gestión de empleados Full Stack desarrollado con **Spring Boot** en el backend y **Angular** en el frontend. El proyecto implementa operaciones CRUD completas, filtrado reactivo en tiempo real y comunicación mediante REST API con gestión de CORS.
+Sistema de gestión de empleados full-stack: **Spring Boot** (API REST) + **Angular** (SPA). Implementa CRUD completo, búsqueda en tiempo real y comunicación REST con CORS configurado.
 
-> **Atribución y Créditos:** Este proyecto se basa en el tutorial conceptual de [Get Arrays (YouTube)](https://www.youtube.com/watch?v=Gx4iBLKLVHk&t=5252s). Fue refactorizado y actualizado integralmente utilizando las últimas versiones estables de las tecnologías: **Spring Boot 3 (migrado a Jakarta EE)** y **Angular moderno (Standalone Components + Signals API)**.
+> **Créditos:** basado en el tutorial de [Get Arrays (YouTube)](https://www.youtube.com/watch?v=Gx4iBLKLVHk&t=5252s), refactorizado con Spring Boot 4 (Jakarta EE) y Angular moderno (Standalone Components, Signals, control flow `@for`/`@if`).
 
 ---
 
-## Capturas de Pantalla
+## Capturas
 
 | Vista General | Búsqueda en Tiempo Real |
 | :---: | :---: |
@@ -24,178 +25,150 @@ Sistema de gestión de empleados Full Stack desarrollado con **Spring Boot** en 
 
 ---
 
-## Arquitectura de la Aplicación
-```bash
+## Arquitectura
 
+```
+Navegador (Angular :4200)  ──HTTP/JSON──►  Spring Boot (:8080)  ──JPA/SQL──►  MySQL
+```
+
+```
 Clientele_Manager/
-├── employeemanager/             # Backend (Spring Boot 3 + Spring Data JPA)
+├── employeemanager/                 # Backend (Spring Boot + Spring Data JPA)
 │   └── src/main/java/tech/getArray/employeemanager/
-│       ├── EmployeemanagerApplication.java  # Punto de entrada + Configuración CORS
-│       ├── EmployeeResource.java            # Controlador REST (Endpoints)
-│       ├── exception/
-│       │   └── UserNotFoundException.java   # Manejo de excepciones de negocio
-│       ├── model/
-│       │   └── Employee.java                # Entidad JPA / Tabla de Base de Datos
-│       ├── repo/
-│       │   └── EmployeeRepo.java            # Repositorio JPA
-│       └── service/
-│           └── EmployeeService.java         # Lógica de servicio y transacciones
+│       ├── EmployeemanagerApplication.java  # Punto de entrada + CORS
+│       ├── EmployeeResource.java            # Controller REST
+│       ├── service/EmployeeService.java     # Lógica de negocio
+│       ├── repo/EmployeeRepo.java           # Repositorio JPA
+│       ├── model/Employee.java              # Entidad
+│       └── exception/UserNotFoundException.java
 │
-└── employeemanagerapp/          # Frontend (Angular + Signals API)
-└── src/app/
-├── app.ts               # Componente principal (Gestión de estado con Signals)
-├── app.html             # Template con Modales Bootstrap y Directivas
-├── employee-service.ts  # Servicio HTTP para consumo de REST API
-└── employee.ts           # Interfaz de datos TypeScrip
+└── employeemanagerapp/              # Frontend (Angular)
+    └── src/app/
+        ├── app.ts / app.html        # Shell: header + <router-outlet> + footer
+        ├── app.routes.ts            # Rutas ('' → EmployeeList)
+        ├── app.config.ts            # Providers (router, HttpClient con fetch, hidratación)
+        ├── employee.ts              # Interface Employee
+        ├── employee-service.ts      # Servicio HTTP
+        ├── layout/                  # Header y Footer globales
+        └── employees/               # Feature: lista, búsqueda, modales add/edit/delete
 ```
 
-## Configuración e Instalación Local
+**Backend en capas:** `Controller → Service → Repository → MySQL`.
+**Frontend:** `Componente → Servicio → HttpClient → API`, con estado en **Signals**.
 
-### Requisitos Previos
+### API REST
 
-* Java JDK 17 o superior.
-* Node.js 18.x o superior.
-* Angular CLI v17+.
-* Base de datos MySQL / PostgreSQL (o H2 en memoria para pruebas).
+| Método | Endpoint | Descripción |
+|---|---|---|
+| GET | `/employee/all` | Lista todos |
+| GET | `/employee/find/{id}` | Busca por id |
+| POST | `/employee/add` | Crea (genera `employeeCode` UUID) |
+| PUT | `/employee/update` | Actualiza |
+| DELETE | `/employee/delete/{id}` | Elimina |
 
-### 1. Clonar el repositorio
+---
 
-```bash
-git clone https://github.com/tu-usuario/Clientele_Manager.git
-cd Clientele_Manager
-```
+## Requisitos
 
-### 2. Configuración e Inicio del Backend
+- Java JDK 26 (el `pom.xml` usa `java.version=26`)
+- Node.js 20+ y npm
+- MySQL 8 **o** Docker
 
-1. Navega al directorio del backend:
+---
+
+## Ejecución local
+
+### 1. Backend
 
 ```bash
 cd employeemanager
-```
-
-2. Modifica el archivo `src/main/resources/application.properties` con tus credenciales de base de datos:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/employeemanager
-spring.datasource.username=tu_usuario
-spring.datasource.password=tu_contraseña
-spring.jpa.hibernate.ddl-auto=update
-```
-
-3. Ejecuta la aplicación:
-
-```bash
 ./mvnw spring-boot:run
 ```
 
-El servidor iniciará en `http://localhost:8080`.
+Corre en `http://localhost:8080`. La conexión se configura con variables de entorno (con valores por defecto para local) en `src/main/resources/application.properties`:
 
-### 3. Configuración e Inicio del Frontend
+| Variable | Defecto |
+|---|---|
+| `DB_HOST` | `localhost` |
+| `DB_PORT` | `3306` |
+| `DB_NAME` | `employeemanager` |
+| `DB_USER` | `root` |
+| `DB_PASSWORD` | definida en `application.properties` (cámbiala por la tuya) |
 
-1. Abre una nueva terminal y navega al proyecto frontend:
+La base de datos se crea sola (`createDatabaseIfNotExist=true`) y las tablas con `ddl-auto=update`.
+
+### 2. Frontend
 
 ```bash
 cd employeemanagerapp
-```
-
-2. Instala las dependencias:
-
-```bash
 npm install
-```
-
-3. Verifica la URL del backend en `src/environments/environment.ts`:
-
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8080'
-};
-```
-
-## 🐳 Método Alternativo: Ejecutar con Docker
-
-Puedes ejecutar la aplicación backend y su base de datos MySQL en contenedores aislados usando Docker Compose. Esto simplifica la configuración y evita la necesidad de instalar MySQL directamente en tu máquina.
-
-### Requisitos Previos
-
-- [Docker](https://www.docker.com/get-started) instalado y en ejecución.
-- Docker Compose (incluido con Docker Desktop).
-
-### Configuración de Entorno
-
-El proyecto incluye un archivo `.env.example` con las variables de entorno requeridas:
-
-```env
-# Configuración de Base de Datos
-DB_HOST=mysqldb
-DB_PORT=3306
-DB_NAME=employeemanager
-DB_USER=root
-DB_PASSWORD=tu_contraseña_segura_aqui 
-
-# Configuración de la Aplicación
-APP_PORT=8080
-```
-
-Crea tu propio `.env` en el directorio del mismo archivo, tomando como base `.env.example`:
-
-```bash
-cp .env.example .env
-```
-
-> You can modify the values in `.env` according to your local configuration.
-
-### Start the Application
-
-Build the Docker image and start the containers in the background:
-
-```bash
-docker compose up -d --build
-```
-
-Once the containers are running:
-
-- **Spring Boot Backend:** `http://localhost:8080/`
-- **MySQL Database:** `localhost:3306`
-
-### Check Running Containers
-
-To verify that the containers are running:
-
-```bash
-docker compose ps
-```
-
-To view the application logs:
-
-```bash
-docker compose logs -f
-```
-
-### Stop the Application
-
-To stop the containers:
-
-```bash
-docker compose down
-```
-
-### Rebuild the Application
-
-If you make changes to the backend or Docker configuration, rebuild the containers with:
-
-```bash
-docker compose down
-docker compose up -d --build
-```
-
-4. Inicia el servidor de desarrollo:
-
-```bash
 ng serve
 ```
 
-5. Abre tu navegador e ingresa a:
+Abre `http://localhost:4200`. La URL del backend está en `src/environments/environment.ts` (`apiUrl`).
 
-`http://localhost:4200`
+> El backend debe estar encendido antes de abrir el frontend; si no, la lista muestra una alerta de error.
+
+---
+
+## Ejecución con Docker (backend + MySQL)
+
+El frontend **no** está dockerizado; se ejecuta con `ng serve`.
+
+1. Crea tu `.env` a partir de la plantilla:
+
+   ```bash
+   cd employeemanager
+   cp .env.example .env
+   ```
+
+   Edita `DB_PASSWORD` con una contraseña propia. `.env` está ignorado por git.
+
+2. Compila el JAR (el `dockerfile` copia `target/employeemanager-0.0.1-SNAPSHOT.jar`):
+
+   ```bash
+   ./mvnw package -DskipTests
+   ```
+
+3. Levanta los contenedores:
+
+   ```bash
+   docker compose up -d --build
+   ```
+
+| Servicio | Acceso |
+|---|---|
+| API Spring Boot | `http://localhost:8080` |
+| MySQL | `localhost:3307` (puerto del host; interno 3306) |
+
+Comandos útiles:
+
+```bash
+docker compose ps          # estado
+docker compose logs -f     # logs
+docker compose down        # detener (conserva datos)
+docker compose down -v     # detener y borrar datos
+```
+
+La app espera al `healthcheck` de MySQL antes de arrancar (`depends_on: service_healthy`) y los datos persisten en el volumen `mysql_data`.
+
+---
+
+## Pruebas
+
+```bash
+cd employeemanagerapp && ng test --watch=false   # frontend (Vitest)
+cd employeemanager && ./mvnw test                # backend
+```
+
+---
+
+## Mejoras pendientes
+
+- Autenticación y autorización (Spring Security + JWT).
+- DTOs y validación (`@Valid`) en el backend.
+- `@RestControllerAdvice` para devolver 404 en `UserNotFoundException` (hoy responde 500).
+- Dividir `EmployeeList` en `EmployeeCard` y `EmployeeModal` y cerrar modales sin manipular el DOM.
+- Migraciones con Flyway en lugar de `ddl-auto=update`.
+- Dockerfile multi-etapa y dockerización del frontend.
+- Quitar la contraseña por defecto de `application.properties`.
