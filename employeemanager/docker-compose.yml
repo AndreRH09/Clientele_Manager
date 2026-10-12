@@ -6,7 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - "${DB_PORT}:3306" # <-- FORZAMOS 3307 en tu PC (Host) hacia el 3306 del Contenedor
+      - "3307:3306" # <-- FORZAMOS 3307 en tu PC (Host) hacia el 3306 del Contenedor
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
